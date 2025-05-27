@@ -59,11 +59,12 @@ async function renderPage(filePath, password) {
     const sha256 = await sha256Hash(password);
     content = content.replace('{{PASSWORD}}', sha256);
   }
-  if (config.passwordUrl) {
-    content = content.replace('{{PASSWORD_URL}}', config.passwordUrl);
-  } else {
-    content = content.replace('{{PASSWORD_URL}}', '');
-  }
+  
+  // 修复PASSWORD_URL替换
+  const passwordUrl = config.passwordUrl || '';
+  console.log('使用PASSWORD_URL:', passwordUrl); // 添加日志以便调试
+  content = content.replace(/\{\{PASSWORD_URL\}\}/g, passwordUrl);
+  
   return content;
 }
 

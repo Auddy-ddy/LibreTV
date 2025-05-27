@@ -18,8 +18,21 @@ replace_env_vars() {
     password_hash=$(hash_password "$PASSWORD")
   fi
 
+  # 获取PASSWORD_URL环境变量
+  local password_url="${PASSWORD_URL:-}"
+  
+  # 打印环境变量值以便调试
+  echo "PASSWORD_HASH: ${password_hash}"
+  echo "PASSWORD_URL: ${password_url}"
+
   # Replace the password placeholder in all HTML files with the hashed password
   find /usr/share/nginx/html -type f -name "*.html" -exec sed -i "s/window.__ENV__.PASSWORD = \"{{PASSWORD}}\";/window.__ENV__.PASSWORD = \"${password_hash}\";/g" {} \;
+  
+  # 替换PASSWORD_URL环境变量
+  find /usr/share/nginx/html -type f -name "*.html" -exec sed -i "s/window.__ENV__.PASSWORD_URL = \"{{PASSWORD_URL}}\";/window.__ENV__.PASSWORD_URL = \"${password_url}\";/g" {} \;
+  
+  # 替换链接中的{{PASSWORD_URL}}为实际值
+  find /usr/share/nginx/html -type f -name "*.html" -exec sed -i "s/href=\"{{PASSWORD_URL}}\"/href=\"${password_url}\"/g" {} \;
   
   echo "Environment variables have been injected into HTML files."
 }

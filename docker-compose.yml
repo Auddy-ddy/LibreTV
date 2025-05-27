@@ -7,4 +7,5 @@ services:
       - "8899:80"
     environment:
       - PASSWORD=${PASSWORD:-111111}
+      - PASSWORD_URL=${PASSWORD_URL:-}
     restart: unless-stopped
