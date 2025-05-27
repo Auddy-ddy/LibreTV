@@ -72,7 +72,8 @@ docker run -d \
   --name libretv \
   -p 8899:80 \
   -e PASSWORD=your_password_here \
-  bestzwei/libretv:latest
+  -e PASSWORD_URL=your_password_url \
+  ghcr.io/cipherorcom/libretv:latest
 ```
 
 访问 `http://localhost:8899` 即可使用。
@@ -85,12 +86,13 @@ docker run -d \
 version: '3'
 services:
   libretv:
-    image: bestzwei/libretv:latest
+    image: ghcr.io/cipherorcom/libretv:latest
     container_name: libretv
     ports:
       - "8899:80"
     environment:
       - PASSWORD=111111
+      - PASSWORD_URL=
     restart: unless-stopped
 ```
 

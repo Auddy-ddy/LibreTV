@@ -28,11 +28,6 @@ replace_env_vars() {
   # 转义password_url中的特殊字符
   local escaped_password_url=$(escape_for_sed "$password_url")
   
-  # 打印环境变量值以便调试
-  echo "PASSWORD_HASH: ${password_hash}"
-  echo "PASSWORD_URL: ${password_url}"
-  echo "ESCAPED_PASSWORD_URL: ${escaped_password_url}"
-
   # Replace the password placeholder in all HTML files with the hashed password
   find /usr/share/nginx/html -type f -name "*.html" -exec sed -i "s/window.__ENV__.PASSWORD = \"{{PASSWORD}}\";/window.__ENV__.PASSWORD = \"${password_hash}\";/g" {} \;
   
