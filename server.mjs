@@ -15,6 +15,7 @@ const __dirname = path.dirname(__filename);
 const config = {
   port: process.env.PORT || 8080,
   password: process.env.PASSWORD || '',
+  passwordUrl: process.env.PASSWORD_URL || '',
   corsOrigin: process.env.CORS_ORIGIN || '*',
   timeout: parseInt(process.env.REQUEST_TIMEOUT || '5000'),
   maxRetries: parseInt(process.env.MAX_RETRIES || '2'),
@@ -57,6 +58,11 @@ async function renderPage(filePath, password) {
   if (password !== '') {
     const sha256 = await sha256Hash(password);
     content = content.replace('{{PASSWORD}}', sha256);
+  }
+  if (config.passwordUrl) {
+    content = content.replace('{{PASSWORD_URL}}', config.passwordUrl);
+  } else {
+    content = content.replace('{{PASSWORD_URL}}', '');
   }
   return content;
 }

@@ -165,6 +165,20 @@ function initPasswordProtection() {
         return; // 如果未设置密码保护，则不进行任何操作
     }
     
+    // 处理获取密码链接的显示与隐藏
+    const passwordLink = document.getElementById('getPasswordLink');
+    if (passwordLink) {
+        // 检查全局环境变量和链接属性
+        const passwordUrl = window.__ENV__ && window.__ENV__.PASSWORD_URL;
+        if (!passwordUrl || passwordUrl === '{{PASSWORD_URL}}') {
+            // 如果没有设置PASSWORD_URL，则隐藏链接
+            passwordLink.style.display = 'none';
+        } else {
+            // 确保链接使用正确的URL
+            passwordLink.href = passwordUrl;
+        }
+    }
+    
     // 如果未验证密码，则显示密码验证弹窗
     if (!isPasswordVerified()) {
         showPasswordModal();
